@@ -118,11 +118,6 @@ public class ProyectosController {
 	@PostMapping("/proyectos/crear/")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Boolean crearProyectos(@RequestBody @Validated Proyectos proyectos) throws IOException {
-<<<<<<< HEAD
-		ProyectosPhotos pPhotos = pService.crearPhotofirst(proyectos.getCodigoProyecto());
-		ProyectosFiles pFiles = new ProyectosFiles(proyectos.getCodigoProyecto(), "", new Date(), null, "", 0, "");
-=======
->>>>>>> aba2adb (Arquitectura limpia microservicios)
 		proyectos.setUbicacion(new ArrayList<Double>(Arrays.asList(
 				new BigDecimal(proyectos.getUbicacion().get(0)).setScale(5, RoundingMode.HALF_UP).doubleValue(),
 				new BigDecimal(proyectos.getUbicacion().get(1)).setScale(5, RoundingMode.HALF_UP).doubleValue())));
@@ -161,12 +156,9 @@ public class ProyectosController {
 									e -> errorCreacionGamificacion(e))) {
 						log.info("Creacion -> Suscripcion");
 						try {
-<<<<<<< HEAD
-=======
 							ProyectosPhotos pPhotos = pService.crearPhotofirst(proyectos.getCodigoProyecto());
 							ProyectosFiles pFiles = new ProyectosFiles(proyectos.getCodigoProyecto(), "", new Date(),
 									null, "", 0, "");
->>>>>>> aba2adb (Arquitectura limpia microservicios)
 							pService.crearProyecto(proyectos, pPhotos, pFiles);
 							return true;
 						} catch (Exception e) {
@@ -397,7 +389,7 @@ public class ProyectosController {
 
 	// VER PROYECTO
 	// @GetMapping("/proyectos/ver/proyecto/{codigoProyecto}")
-	@GetMapping("/proyectos/ver/proyecto/{idProyecto}")
+	@GetMapping("/proyectos/ver/proyecto/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.FOUND)
 	public Proyectos verProyecto(@PathVariable("codigoProyecto") Integer codigoProyecto) {
 		if (pRepository.existsByCodigoProyecto(codigoProyecto))
@@ -482,7 +474,7 @@ public class ProyectosController {
 
 	@DeleteMapping("/proyectos/eliminar/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.OK)
-	public Boolean eliminarProyectos(@PathVariable("nombre") Integer codigoProyecto) throws IOException {
+	public Boolean eliminarProyectos(@PathVariable("codigoProyecto") Integer codigoProyecto) throws IOException {
 		try {
 			Proyectos proyectos = pRepository.findByCodigoProyecto(codigoProyecto);
 			ProyectosFiles pf = pfRepository.findByCodigoProyecto(codigoProyecto);
@@ -493,6 +485,7 @@ public class ProyectosController {
 					log.info("Eliminacion Recomendacion");
 				}
 			}
+
 			pRepository.delete(proyectos);
 			pfRepository.delete(pf);
 			phRepository.delete(pp);
