@@ -97,7 +97,6 @@ public class ProyectosController {
 //  ****************************	PROYECTOS	***********************************  //
 
 	// CREAR IMAGEN INICIAL DE PROYECTOS
-	// @PostMapping("/proyectos/image/")
 	@PostMapping("/proyectos/image/")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Boolean ponerImagen(@RequestParam(value = "image") MultipartFile image) {
@@ -114,7 +113,6 @@ public class ProyectosController {
 	}
 
 	// CREAR PROYECTOS
-	// @PostMapping("/proyectos/crear/")
 	@PostMapping("/proyectos/crear/")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	public Boolean crearProyectos(@RequestBody @Validated Proyectos proyectos) throws IOException {
@@ -188,7 +186,6 @@ public class ProyectosController {
 	}
 
 	// EDITAR IMAGEN PROYECTO
-	// @PutMapping("/proyectos/imagen/poner/{codigoProyecto}")
 	@PutMapping("/proyectos/imagen/poner/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Boolean ponerImagen(@PathVariable("codigoProyecto") Integer codigoProyecto,
@@ -201,7 +198,6 @@ public class ProyectosController {
 	}
 
 	// PONER FILE EN EL PROYECTO
-	// @PutMapping("/proyectos/file/poner/{codigoProyecto}")
 	@PutMapping("/proyectos/file/poner/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public Boolean ponerFile(@PathVariable("codigoProyecto") Integer codigoProyecto,
@@ -215,7 +211,6 @@ public class ProyectosController {
 	}
 
 	// PETICION ELIMINAR PROYECTO
-	// @PutMapping("/proyectos/eliminarAdmin/{codigoProyecto}")
 	@PutMapping("/proyectos/eliminarAdmin/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void eliminarAdmin(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -228,7 +223,6 @@ public class ProyectosController {
 	}
 
 	// ELIMINAR PETICION PARA ELIMINAR PROYECTO
-	// @PutMapping("/proyectos/eliminarAdmin/{codigoProyecto}")
 	@PutMapping("/proyectos/eliminarPeticionAdmin/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public void eliminarPeticionProyecto(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -299,7 +293,6 @@ public class ProyectosController {
 	// MICROSERVICIO -> RECOMENDACIONES
 	// MICROSERVICIO -> ESTADISTICAS DASHBOARD
 	// MICROSERVICIO -> GAMIFICACION
-	// @GetMapping("/proyectos/listar/")
 	@GetMapping("/proyectos/listar/")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<Proyectos> getProyectos() throws IOException {
@@ -311,7 +304,6 @@ public class ProyectosController {
 	}
 
 	// CONVERTIR FOTO BINARIO A STRING
-	// @GetMapping("/proyectos/imagen/binary/{codigoProyecto}")
 	@GetMapping("/proyectos/imagen/binary/{codigoProyecto}")
 	@ResponseStatus(HttpStatus.OK)
 	public String binaryToStringPhoto(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -327,8 +319,48 @@ public class ProyectosController {
 		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no existe");
 	}
 
+	@GetMapping("/proyectos/nombre/{codigoProyecto}")
+	public String obtenerNombre(@PathVariable("codigoProyecto") Integer codigoProyecto) throws IOException {
+		try {
+			if (pRepository.existsByCodigoProyecto(codigoProyecto)) {
+				Proyectos p = pRepository.findByCodigoProyecto(codigoProyecto);
+				return p.getNombre();
+			}
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no existe");
+		} catch (Exception e) {
+			throw new IOException("error ver nombre proyecto " + e.getMessage());
+		}
+	}
+
+	@GetMapping("/proyectos/mensaje/{codigoProyecto}")
+	public String obtenerMensajeParticipacion(@PathVariable("codigoProyecto") Integer codigoProyecto)
+			throws IOException {
+		try {
+			if (pRepository.existsByCodigoProyecto(codigoProyecto)) {
+				Proyectos p = pRepository.findByCodigoProyecto(codigoProyecto);
+				return p.getMensajeParticipacion();
+			}
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no existe");
+		} catch (Exception e) {
+			throw new IOException("error ver nombre proyecto " + e.getMessage());
+		}
+	}
+
+	@GetMapping("/proyectos/gamificacion/{codigoProyecto}")
+	public Boolean obtenerEstadoGamificacion(@PathVariable("codigoProyecto") Integer codigoProyecto)
+			throws IOException {
+		try {
+			if (pRepository.existsByCodigoProyecto(codigoProyecto)) {
+				Proyectos p = pRepository.findByCodigoProyecto(codigoProyecto);
+				return p.getGamificacion();
+			}
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Proyecto no existe");
+		} catch (Exception e) {
+			throw new IOException("error ver nombre proyecto " + e.getMessage());
+		}
+	}
+
 	// DESCARGAR IMAGEN
-	// @GetMapping(value = "/proyectos/imagen/downloadImage/{codigoProyecto}"
 	@GetMapping(value = "/proyectos/imagen/downloadImage/{codigoProyecto}", produces = { MediaType.IMAGE_JPEG_VALUE,
 			MediaType.IMAGE_PNG_VALUE })
 	@ResponseStatus(HttpStatus.OK)
@@ -346,7 +378,6 @@ public class ProyectosController {
 	}
 
 	// CONVERTIR FILE BINARIO A STRING
-	// @GetMapping("/proyectos/imagen/binary/{codigoProyecto}")
 	@GetMapping("/proyectos/file/binary/{codigoProyecto}")
 	@ResponseStatus(HttpStatus.OK)
 	public String binaryToStringFile(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -363,7 +394,6 @@ public class ProyectosController {
 	}
 
 	// DESCARGAR IMAGEN
-	// @GetMapping(value = "/proyectos/file/downloadFile/{codigoProyecto}"
 	@GetMapping(value = "/proyectos/file/downloadFile/{codigoProyecto}", produces = { MediaType.APPLICATION_PDF_VALUE })
 	@ResponseStatus(HttpStatus.OK)
 	public byte[] file(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -380,7 +410,6 @@ public class ProyectosController {
 	}
 
 	// Obtener descripcion del proyecto
-	// @GetMapping("/proyectos/descripcion/{codigoProyecto}")
 	@GetMapping("/proyectos/descripcion/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.FOUND)
 	public String descripcionMuro(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -388,7 +417,6 @@ public class ProyectosController {
 	}
 
 	// VER PROYECTO
-	// @GetMapping("/proyectos/ver/proyecto/{codigoProyecto}")
 	@GetMapping("/proyectos/ver/proyecto/{codigoProyecto}")
 	@ResponseStatus(code = HttpStatus.FOUND)
 	public Proyectos verProyecto(@PathVariable("codigoProyecto") Integer codigoProyecto) {
@@ -398,7 +426,6 @@ public class ProyectosController {
 	}
 
 	// LISTA DE PROYECTOS POR MURO
-	// @GetMapping("/proyectos/listarByMuro/{codigo}")
 	@GetMapping("/proyectos/listarByMuro/{codigo}")
 	@ResponseStatus(code = HttpStatus.OK)
 	public List<Proyectos> getProyecyosByMuro(@PathVariable("codigo") Integer codigo) {
@@ -462,14 +489,19 @@ public class ProyectosController {
 
 	// BUSQUEDA
 	@GetMapping("/proyectos/busqueda/obtener/")
-	public List<Proyectos> busquedaObtener(List<Integer> codigos) {
-		List<Proyectos> listaProyectos = new ArrayList<Proyectos>();
-		codigos.forEach(x -> {
-			if (pRepository.existsByCodigoProyecto(x)) {
-				listaProyectos.add(pRepository.findByCodigoProyecto(x));
-			}
-		});
-		return listaProyectos;
+	public List<Proyectos> busquedaObtener(@RequestParam("codigos") List<Integer> codigos) throws IOException {
+		try {
+			log.info("obtener");
+			List<Proyectos> lP = new ArrayList<Proyectos>();
+			codigos.forEach(x -> {
+				if (pRepository.existsByCodigoProyecto(x)) {
+					lP.add(pRepository.findByCodigoProyecto(x));
+				}
+			});
+			return lP;
+		} catch (Exception e) {
+			throw new IOException("error buscar preguntas: " + e.getMessage());
+		}
 	}
 
 	@DeleteMapping("/proyectos/eliminar/{codigoProyecto}")
