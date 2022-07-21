@@ -115,7 +115,7 @@ public class ProyectosController {
 	// CREAR PROYECTOS
 	@PostMapping("/proyectos/crear/")
 	@ResponseStatus(code = HttpStatus.CREATED)
-	public Boolean crearProyectos(@RequestBody @Validated Proyectos proyectos) throws IOException {
+	public Integer crearProyectos(@RequestBody @Validated Proyectos proyectos) throws IOException {
 		proyectos.setUbicacion(new ArrayList<Double>(Arrays.asList(
 				new BigDecimal(proyectos.getUbicacion().get(0)).setScale(5, RoundingMode.HALF_UP).doubleValue(),
 				new BigDecimal(proyectos.getUbicacion().get(1)).setScale(5, RoundingMode.HALF_UP).doubleValue())));
@@ -158,7 +158,7 @@ public class ProyectosController {
 							ProyectosFiles pFiles = new ProyectosFiles(proyectos.getCodigoProyecto(), "", new Date(),
 									null, "", 0, "");
 							pService.crearProyecto(proyectos, pPhotos, pFiles);
-							return true;
+							return proyectos.getCodigoProyecto();
 						} catch (Exception e) {
 							throw new ResponseStatusException(HttpStatus.CONFLICT,
 									"Creacion fallida, proyecto: " + e.getMessage());
